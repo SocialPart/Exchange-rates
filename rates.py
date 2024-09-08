@@ -8,8 +8,6 @@ URL= "https://cbr.ru/scripts/XML_daily.asp"
 # Выполняем HTTP-запрос методом get по указанному URL
 response = requests.get(URL)
 tree = ET.fromstring(response.text) # Преобразуем строку с XML-данными в объект
-print(tree) # Выведем объект
-
 user_case = int(input("Вывести информацию по коду валюты - введите 1\n"
                       "Вывести таблицу курсов всех валют к рублю - введите 2\n"))
 
@@ -33,3 +31,16 @@ if user_case == 1:
 elif user_case == 2:
     # Здесь должен быть наш новый функционал, который выводит таблицу курсов в сех валют
     print("ok")
+    
+    currency_rates = {}
+
+    for element_currency in tree.findall(".//Valute"):
+        char_code = element_currency.find("CharCode").text
+        value = element_currency.find("Value").text
+        currency_rates[char_code] = value
+
+        # Выводим таблицу с курсами всех валют
+        print("Курсы валют к рублю:")
+        print("--------------------")
+        for char_code, value in currency_rates.items():
+            print(f"{char_code}, {value}")
