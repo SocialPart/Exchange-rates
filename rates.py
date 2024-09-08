@@ -10,17 +10,26 @@ response = requests.get(URL)
 tree = ET.fromstring(response.text) # Преобразуем строку с XML-данными в объект
 print(tree) # Выведем объект
 
-code_currency = "USD" # Например, доллар
-value_currency = None # Курс
+user_case = int(input("Вывести информацию по коду валюты - введите 1\n"
+                      "Вывести таблицу курсов всех валют к рублю - введите 2\n"))
 
-for element_currency in tree.findall(".//Valute"):
-    char_code = element_currency.find("CharCode").text
-    if char_code == code_currency:
-        nominal = element_currency.find("Nominal").text # Например 10
-        name_currency = element_currency.find("Name").text # Например Евро
-        value_currency = element_currency.find("Value").text # Например 55,55 рублей
+if user_case == 1:
 
-if value_currency:
-    print(f"{nominal} {name_currency} ({code_currency}) = {value_currency} рублей")
-else:
-    print(f"Курс {code_currency} на текущий день неизвестен")
+    code_currency = "USD" # Например, доллар
+    value_currency = None # Курс
+
+    for element_currency in tree.findall(".//Valute"):
+        char_code = element_currency.find("CharCode").text
+        if char_code == code_currency:
+            nominal = element_currency.find("Nominal").text # Например 10
+            name_currency = element_currency.find("Name").text # Например Евро
+            value_currency = element_currency.find("Value").text # Например 55,55 рублей
+
+    if value_currency:
+        print(f"{nominal} {name_currency} ({code_currency}) = {value_currency} рублей")
+    else:
+        print(f"Курс {code_currency} на текущий день неизвестен")
+
+elif user_case == 2:
+    # Здесь должен быть наш новый функционал, который выводит таблицу курсов в сех валют
+    print("ok")
